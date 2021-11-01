@@ -3,17 +3,12 @@ import { useState, useEffect, useRef } from "react";
 import ReactDOM from "react-dom";
 import { unpkgPathPlugin } from "./plugins/unpkg-path-plugin";
 import { fetchPlugin } from "./plugins/fetch-plugin";
-
-function hello() {
-	if (Math.random() !== 2) {
-		return "ok";
-	}
-}
+import CodeEditor from "./components/code-editor";
 
 const App = () => {
 	const ref = useRef<any>();
+	const iframe = useRef<any>();
 	const [ input, setInput ] = useState("");
-	const [ code, setCode ] = useState("");
 
 	const startService = async () => {
 		await esbuild.initialize({
@@ -31,6 +26,9 @@ const App = () => {
 		if (!ref.current) {
 			return;
 		} else {
+			// reload iframe to prevent user from deleting html structure
+			iframe.current.srcdoc = html;
+			// bundle code
 			const result = await esbuild.build({
 				entryPoints: [ "index.js" ],
 				bundle: true,
@@ -42,23 +40,41 @@ const App = () => {
 						global: "window"
 					}
 			});
-			setCode(result.outputFiles[0].text);
-
-			try {
-				eval(result.outputFiles[0].text);
-			} catch (err) {
-				alert(err);
-			}
+			// pass bundled code into iframe element via a ref
+			iframe.current.contentWindow.postMessage(result.outputFiles[0].text, "*");
 		}
 	};
 
+	// setup event listener for message and eval the message (bundled code)
+	// embed this as inner html in iframe using srcdoc attribute
+	const html = `
+		<html>
+			<head></head>
+			<body>
+				<div id="root"></div>
+				<script>
+					window.addEventListener("message", (event) => {
+						try {
+							eval(event.data);
+						} catch (err) {
+							const root = document.getElementById("root");
+							root.innerHTML = '<div style="color: red;"><h4>Runtime Error</h4>' + err + '</div>';
+							console.error(err);
+						}
+					}, false)
+				</script>
+			</body>
+		</html>
+	`;
+
 	return (
 		<div>
-			<textarea rows={10} cols={50} value={input} onChange={(event) => setInput(event.target.value)} />
+			<CodeEditor />
+			<textarea value={input} onChange={(event) => setInput(event.target.value)} />
 			<div>
 				<button onClick={onClick}>Submit</button>
 			</div>
-			<pre>{code}</pre>
+			<iframe title="code preview" ref={iframe} sandbox="allow-scripts" srcDoc={html} />
 		</div>
 	);
 };
