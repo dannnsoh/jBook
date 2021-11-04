@@ -1,13 +1,19 @@
 import "semantic-ui-css/semantic.min.css";
 import "./index.css";
 import ReactDOM from "react-dom";
+import { Provider } from "react-redux";
+import { store } from "./state";
 import CodeCell from "./components/code-cell";
+import TextEditor from "./components/text-editor";
 
 const App = () => {
 	return (
-		<div>
-			<CodeCell />
-		</div>
+		<Provider store={store}>
+			<div>
+				<TextEditor />
+				{/* <CodeCell /> */}
+			</div>
+		</Provider>
 	);
 };
 

@@ -3,6 +3,7 @@ import { useRef, useEffect } from "react";
 
 interface PreviewProps {
 	code: string;
+	bundleError: string;
 }
 
 // setup event listener for message and eval the message (bundled code)
@@ -13,13 +14,20 @@ const html = `
         <body>
             <div id="root"></div>
             <script>
+				const handleError = (err) => {
+					const root = document.getElementById("root");
+					root.innerHTML = '<div style="color: red;"><h4>Runtime Error</h4>' + err + '</div>';
+					console.error(err);
+				};
+				window.addEventListener("error", (event) => {
+					event.preventDefault();
+					handleError(event.error);
+				});
                 window.addEventListener("message", (event) => {
                     try {
                         eval(event.data);
                     } catch (err) {
-                        const root = document.getElementById("root");
-                        root.innerHTML = '<div style="color: red;"><h4>Runtime Error</h4>' + err + '</div>';
-                        console.error(err);
+                        handleError(err);
                     }
                 }, false)
             </script>
@@ -27,15 +35,18 @@ const html = `
     </html>
 `;
 
-const Preview = ({ code }: PreviewProps) => {
+const Preview = ({ code, bundleError }: PreviewProps) => {
 	const iframe = useRef<any>();
 
 	useEffect(
 		() => {
-			// reload iframe to prevent user from deleting html structure
+			// update srcdoc of iframe to default state to prevent user from deleting html structure by any chance
 			iframe.current.srcdoc = html;
-			// pass bundled code into iframe element via a ref
-			iframe.current.contentWindow.postMessage(code, "*");
+			// slightly delay to allow update of srcdoc first
+			setTimeout(() => {
+				// pass bundled code into iframe element via a ref
+				iframe.current.contentWindow.postMessage(code, "*");
+			}, 50);
 		},
 		[ code ]
 	);
@@ -43,6 +54,12 @@ const Preview = ({ code }: PreviewProps) => {
 	return (
 		<div className="preview-wrapper">
 			<iframe title="code preview" ref={iframe} sandbox="allow-scripts" srcDoc={html} />
+			{bundleError && (
+				<div className="preview-error">
+					<h3>Compilation Error</h3>
+					{bundleError}
+				</div>
+			)}
 		</div>
 	);
 };
