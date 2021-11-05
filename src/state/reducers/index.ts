@@ -1,6 +1,6 @@
 // export file for all reducers combined
 import { combineReducers } from "redux";
-import cellsReducer from "../reducers/cellsReducer";
+import cellsReducer from "./cellsReducer";
 
 const reducers = combineReducers({
 	cells: cellsReducer
