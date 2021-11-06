@@ -2,11 +2,17 @@ import "./text-editor.css";
 import { useState, useEffect, useRef } from "react";
 import MDEditor from "@uiw/react-md-editor";
 import { Segment } from "semantic-ui-react";
+import { Cell } from "../state";
+import { useActions } from "../hooks/use-actions";
 
-const TextEditor = () => {
-	const [ value, setValue ] = useState<string | undefined>("# Header");
-	const [ editing, setEditing ] = useState(false);
+interface TextEditorProps {
+	cell: Cell;
+}
+
+const TextEditor = ({ cell }: TextEditorProps) => {
 	const ref = useRef<HTMLDivElement | null>(null);
+	const [ editing, setEditing ] = useState(false);
+	const { updateCell } = useActions();
 
 	useEffect(() => {
 		const listener = (event: MouseEvent) => {
@@ -24,7 +30,7 @@ const TextEditor = () => {
 	if (editing) {
 		return (
 			<div className="text-editor" ref={ref}>
-				<MDEditor value={value} onChange={(v) => setValue(v || "")} autoFocus />
+				<MDEditor value={cell.content} onChange={(value) => updateCell(cell.id, value || "")} autoFocus />
 			</div>
 		);
 	}
@@ -32,7 +38,7 @@ const TextEditor = () => {
 	return (
 		<Segment className="text-editor" onClick={() => setEditing(true)}>
 			<div className="card-content">
-				<MDEditor.Markdown source={value} />
+				<MDEditor.Markdown source={cell.content || "*Click to edit*"} />
 			</div>
 		</Segment>
 	);
