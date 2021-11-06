@@ -8,3 +8,7 @@ body {
 	box-sizing: border-box;
 	background-color: #212529;
 }
+
+#root {
+	padding: 0 1.5rem 2rem;
+}

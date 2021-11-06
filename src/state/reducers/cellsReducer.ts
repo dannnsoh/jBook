@@ -48,7 +48,7 @@ const reducer = (state: CellsState = initialState, action: Action) => {
 				draft.order[targetId] = action.payload.id;
 				return draft;
 
-			case ActionType.INSERT_CELL_BEFORE:
+			case ActionType.INSERT_CELL_AFTER:
 				const cell: Cell = {
 					id: randomId(),
 					type: action.payload.type,
@@ -56,13 +56,13 @@ const reducer = (state: CellsState = initialState, action: Action) => {
 				};
 				// insert cell into data array, which contains all the cells and their ids
 				draft.data[cell.id] = cell;
-				// find index of cell to insert before
+				// find index of cell to insert after
 				const foundIndex = draft.order.findIndex((id) => id === action.payload.id);
-				// if index is -1 (means no index was found for that id), add cell to end of order array
+				// if index is -1 (means no index was found for that id), add cell to start of order array
 				if (foundIndex === -1) {
-					draft.order.push(cell.id);
+					draft.order.unshift(cell.id);
 				} else {
-					draft.order.splice(foundIndex, 0, cell.id);
+					draft.order.splice(foundIndex + 1, 0, cell.id);
 				}
 				return draft;
 
