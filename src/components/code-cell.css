@@ -1,5 +1,18 @@
+@keyframes fadeIn {
+	0% {
+		opacity: 0;
+	}
+	50% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
 .react-resizable .ui.segment {
-	width: 100%;
+	height: 100%;
+	flex-grow: 1;
+	background-color: #fff;
 	margin: 0;
 	border-radius: 0;
 	overflow: hidden;
@@ -8,6 +21,7 @@
 .react-resizable .ui.text.loader {
 	font-size: 1.5rem;
 	padding-top: 4rem;
+	animation: fadeIn .6s;
 }
 
 .react-resizable .ui.text.loader::after,

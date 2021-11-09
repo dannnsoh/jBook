@@ -12,22 +12,14 @@ interface CodeCellProps {
 	cell: Cell;
 }
 
-let firstBundle = true;
-
 const CodeCell = ({ cell }: CodeCellProps) => {
 	const { updateCell, createBundle } = useActions();
 	const bundle = useTypedSelector((state) => state.bundles[cell.id]);
 
 	useEffect(
 		() => {
-			// to prevent the timer from running the first time the page is loaded
-			if (firstBundle) {
-				createBundle(cell.id, cell.content);
-			}
-
 			const timer = setTimeout(async () => {
 				createBundle(cell.id, cell.content);
-				firstBundle = false;
 			}, 750);
 
 			return () => {
@@ -53,6 +45,11 @@ const CodeCell = ({ cell }: CodeCellProps) => {
 					<Preview code={bundle.code} bundleError={bundle.err} />
 				)}
 			</div>
+			{/* <Segment>
+				<Loader active indeterminate>
+					Loading...
+				</Loader>
+			</Segment> */}
 		</Resizable>
 	);
 };
