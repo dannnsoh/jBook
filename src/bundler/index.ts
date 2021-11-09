@@ -38,7 +38,10 @@ const bundle = async (rawCode: string) => {
 				err: err.message
 			};
 		} else {
-			console.log("Error occurred!");
+			return {
+				code: "",
+				err: "An error has occurred!"
+			};
 		}
 	}
 };
