@@ -25,7 +25,10 @@ const bundle = async (rawCode: string) => {
 				{
 					"process.env.NODE_ENV": '"production"',
 					global: "window"
-				}
+				},
+			// configure esbuild to use _React for the show() function to prevent naming collision with "import React ..."
+			jsxFactory: "_React.createElement",
+			jsxFragment: "_React.Fragment"
 		});
 		return {
 			code: result.outputFiles[0].text,

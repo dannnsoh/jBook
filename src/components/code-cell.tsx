@@ -7,6 +7,7 @@ import { Cell } from "../state";
 import { useActions } from "../hooks/use-actions";
 import { useTypedSelector } from "../hooks/use-typed-selector";
 import { Loader, Segment } from "semantic-ui-react";
+import { useCumulativeCode } from "../hooks/use-cumulative-code";
 
 interface CodeCellProps {
 	cell: Cell;
@@ -15,18 +16,20 @@ interface CodeCellProps {
 const CodeCell = ({ cell }: CodeCellProps) => {
 	const { updateCell, createBundle } = useActions();
 	const bundle = useTypedSelector((state) => state.bundles[cell.id]);
+	const cumulativeCode = useCumulativeCode(cell.id);
 
 	useEffect(
 		() => {
 			const timer = setTimeout(async () => {
-				createBundle(cell.id, cell.content);
+				createBundle(cell.id, cumulativeCode);
 			}, 750);
 
 			return () => {
 				clearTimeout(timer);
 			};
 		},
-		[ cell.id, cell.content, createBundle ]
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+		[ cell.id, cumulativeCode, createBundle ]
 	);
 
 	return (
