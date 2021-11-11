@@ -1,12 +1,14 @@
 {
 	"name": "jsnote-dan",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "",
 	"main": "dist/index.js",
 	"publishConfig": {
 		"access": "public"
 	},
-	"files": [ "dist" ],
+	"files": [
+		"dist"
+	],
 	"bin": "dist/index.js",
 	"scripts": {
 		"start": "tsc --watch --preserveWatchOutput",
