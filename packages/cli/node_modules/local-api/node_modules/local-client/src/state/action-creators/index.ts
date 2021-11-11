@@ -1,4 +1,5 @@
 import { Dispatch } from "react";
+import axios from "axios";
 import { ActionType } from "../action-types";
 import {
 	Action,
@@ -8,8 +9,9 @@ import {
 	MoveCellAction,
 	InsertCellAfterAction
 } from "../actions";
-import { CellTypes } from "../cell";
+import { CellTypes, Cell } from "../cell";
 import bundle from "../../bundler";
+import { RootState } from "..";
 
 export const updateCell = (id: string, content: string): UpdateCellAction => {
 	return {
@@ -40,7 +42,10 @@ export const moveCell = (id: string, direction: Direction): MoveCellAction => {
 	};
 };
 
-export const insertCellAfter = (id: string | null, cellType: CellTypes): InsertCellAfterAction => {
+export const insertCellAfter = (
+	id: string | null,
+	cellType: CellTypes
+): InsertCellAfterAction => {
 	return {
 		type: ActionType.INSERT_CELL_AFTER,
 		payload:
@@ -52,8 +57,8 @@ export const insertCellAfter = (id: string | null, cellType: CellTypes): InsertC
 };
 
 export const createBundle = (id: string, input: string) => {
-	// utilising redux thunk for bundling (async)
-	// type annotation for dispatch is to make sure we only call dispatch with an actual action with a payload
+	// utilising redux thunk for async
+	// type annotation for dispatch is to make sure we can only call dispatch with a properly typed action object
 	return async (dispatch: Dispatch<Action>) => {
 		dispatch({
 			type: ActionType.BUNDLE_START,
@@ -73,5 +78,49 @@ export const createBundle = (id: string, input: string) => {
 					bundle: result
 				}
 		});
+	};
+};
+
+export const fetchCells = () => {
+	return async (dispatch: Dispatch<Action>) => {
+		// only purpose of this action is to flip loading to true
+		dispatch({ type: ActionType.FETCH_CELLS });
+
+		try {
+			// make request to fetch cells
+			const { data }: { data: Cell[] } = await axios.get("/cells");
+
+			dispatch({
+				type: ActionType.FETCH_CELLS_COMPLETE,
+				payload: data
+			});
+		} catch (err) {
+			if (err instanceof Error) {
+				dispatch({
+					type: ActionType.FETCH_CELLS_ERROR,
+					payload: err.message
+				});
+			}
+		}
+	};
+};
+
+export const saveCells = () => {
+	return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
+		// get data and order from current cells state
+		const { cells: { data, order } } = getState();
+		// derive array of cells in order from data and order array
+		const cells = order.map(id => data[id]);
+		// make sure request body has an array of cells inside, as defined in createCellsRouter
+		try {
+			await axios.post("/cells", { cells });
+		} catch (err) {
+			if (err instanceof Error) {
+				dispatch({
+					type: ActionType.SAVE_CELLS_ERROR,
+					payload: err.message
+				});
+			}
+		}
 	};
 };

@@ -34,7 +34,7 @@ export const createCellsRouter = (filename: string, dir: string) => {
 	});
 
 	router.post("/cells", async (req, res) => {
-		// Take list of cells from the request object
+		// Take array of cells from the request object
 		// Serialize them
 		const { cells }: { cells: Cell[] } = req.body;
 
