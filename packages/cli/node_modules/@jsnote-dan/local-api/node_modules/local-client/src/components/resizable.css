@@ -1,0 +1,32 @@
+.react-resizable-handle {
+	display: block;
+	background-color: #9c9c9c;
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+.resize-horizontal {
+	display: flex;
+	flex-direction: row;
+}
+
+.react-resizable-handle-s {
+	height: 10px;
+	width: 100%;
+	cursor: row-resize;
+	border-bottom-left-radius: 3px;
+	border-bottom-right-radius: 3px;
+	background-size: 1.8rem;
+	background-image: url("./handle-horizontal.svg");
+}
+
+.react-resizable-handle-e {
+	width: 10px;
+	min-width: 10px;
+	height: 100%;
+	cursor: col-resize;
+	border-bottom: none;
+	border-top: none;
+	background-size: 1.5rem;
+	background-image: url("./handle-vertical.svg");
+}

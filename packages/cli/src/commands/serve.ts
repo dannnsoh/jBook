@@ -1,6 +1,6 @@
 import path from "path";
 import { Command } from "commander";
-import { serve } from "local-api";
+import { serve } from "@jsnote-dan/local-api";
 
 const isProduction = process.env.NODE_ENV === "production";
 
@@ -24,9 +24,7 @@ export const serveCommand = new Command()
 			);
 		} catch (err) {
 			if (err instanceof Error && err.message.includes("EADDRINUSE")) {
-				console.error(
-					"Port is in use. Try running on a different port."
-				);
+				console.error("Port is in use. Try running on a different port.");
 			} else {
 				throw err;
 			}

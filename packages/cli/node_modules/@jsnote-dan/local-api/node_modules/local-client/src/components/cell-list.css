@@ -1,0 +1,7 @@
+.cell-list {
+	padding: 0 2rem 50vh;
+}
+
+.react-draggable-transparent-selection .cell-list {
+	padding-bottom: 100vh;
+}

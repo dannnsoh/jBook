@@ -1,20 +1,27 @@
 {
-	"name": "cli",
+	"name": "jsnote-dan",
 	"version": "1.0.0",
 	"description": "",
+	"publishConfig": {
+		"access": "public"
+	},
+	"files": [ "dist" ],
+	"bin": "dist/index.js",
 	"scripts": {
 		"start": "tsc --watch --preserveWatchOutput",
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"prepublishOnly": "esbuild src/index.ts --platform=node --outfile=dist/index.js --bundle --minify --target=es6 --define:process.env.NODE_ENV=\"'production'\""
 	},
 	"keywords": [],
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
-		"commander": "^8.3.0",
-		"local-api": "^1.0.0"
+		"@jsnote-dan/local-client": "^1.0.0"
 	},
 	"devDependencies": {
+		"@jsnote-dan/local-api": "^1.0.0",
+		"commander": "^8.3.0",
 		"@types/node": "^16.11.7",
+		"esbuild": "^0.13.13",
 		"typescript": "^4.4.4"
 	}
 }

@@ -63,6 +63,7 @@ var createCellsRouter = function (filename, dir) {
                 case 2:
                     err_1 = _a.sent();
                     if (!(err_1 instanceof Error && err_1.message.includes("ENOENT"))) return [3 /*break*/, 4];
+                    console.log("File does not exist. Creating new 'notebook.js' file...");
                     // Create file and add default cells
                     return [4 /*yield*/, promises_1.default.writeFile(fullPath, "[]", "utf-8")];
                 case 3:
@@ -87,7 +88,7 @@ var createCellsRouter = function (filename, dir) {
                 case 1:
                     // Write the cells into the file
                     _a.sent();
-                    res.send({ status: "OK 👍" });
+                    res.send({ status: "OK" });
                     return [2 /*return*/];
             }
         });

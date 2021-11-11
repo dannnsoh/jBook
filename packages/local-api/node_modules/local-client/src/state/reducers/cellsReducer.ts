@@ -19,10 +19,7 @@ const initialState: CellsState = {
 	data: {}
 };
 
-const reducer = (
-	state: CellsState = initialState,
-	action: Action
-): CellsState => {
+const reducer = (state: CellsState = initialState, action: Action): CellsState => {
 	// draft is a proxy to the original state that can be safely mutated
 	return produce(state, draft => {
 		switch (action.type) {
@@ -37,7 +34,7 @@ const reducer = (
 
 			case ActionType.FETCH_CELLS_COMPLETE:
 				draft.order = action.payload.map(cell => cell.id);
-				state.data = action.payload.reduce(
+				draft.data = action.payload.reduce(
 					(acc, cell) => {
 						// data = { key(cell.id): cell(cell with id, type, content) }
 						acc[cell.id] = cell;
@@ -67,9 +64,7 @@ const reducer = (
 			case ActionType.MOVE_CELL:
 				const { direction } = action.payload;
 				// index of cell
-				const index = draft.order.findIndex(
-					id => id === action.payload.id
-				);
+				const index = draft.order.findIndex(id => id === action.payload.id);
 				// new index of cell depending on move direction
 				const targetId = direction === "up" ? index - 1 : index + 1;
 				// ensure new index is within bounds of order array
@@ -90,9 +85,7 @@ const reducer = (
 				// insert cell into data array, which contains all the cells and their ids
 				draft.data[cell.id] = cell;
 				// find index of cell to insert after
-				const foundIndex = draft.order.findIndex(
-					id => id === action.payload.id
-				);
+				const foundIndex = draft.order.findIndex(id => id === action.payload.id);
 				// if index is -1 (means no index was found for that id), add cell to start of order array
 				if (foundIndex === -1) {
 					draft.order.unshift(cell.id);

@@ -57,7 +57,7 @@ export const insertCellAfter = (
 };
 
 export const createBundle = (id: string, input: string) => {
-	// utilising redux thunk for async
+	// use redux thunk for async logic
 	// type annotation for dispatch is to make sure we can only call dispatch with a properly typed action object
 	return async (dispatch: Dispatch<Action>) => {
 		dispatch({
