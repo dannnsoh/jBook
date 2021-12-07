@@ -24,7 +24,7 @@
 		"@types/react-resizable": "^1.7.4",
 		"@uiw/react-md-editor": "^3.6.5",
 		"axios": "^0.24.0",
-		"esbuild-wasm": "^0.13.13",
+		"esbuild-wasm": "*",
 		"immer": "^9.0.6",
 		"localforage": "^1.10.0",
 		"monaco-editor": "^0.30.0",
