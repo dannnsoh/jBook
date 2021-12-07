@@ -1,6 +1,6 @@
 {
 	"name": "jsnote-dan",
-	"version": "1.0.2",
+	"version": "1.0.3",
 	"description": "",
 	"main": "dist/index.js",
 	"publishConfig": {
@@ -18,10 +18,10 @@
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
-		"@jsnote-dan/local-client": "^1.0.0"
+		"@jsnote-dan/local-client": "^1.0.3"
 	},
 	"devDependencies": {
-		"@jsnote-dan/local-api": "^1.0.0",
+		"@jsnote-dan/local-api": "^1.0.3",
 		"@types/node": "^16.11.7",
 		"commander": "^8.3.0",
 		"esbuild": "^0.13.13",
