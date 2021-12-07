@@ -10,22 +10,21 @@ const bundle = async (rawCode: string) => {
 		// initialize esbuild
 		await esbuild.initialize({
 			worker: true,
-			wasmURL: "https://unpkg.com/esbuild-wasm/esbuild.wasm"
+			wasmURL: "https://unpkg.com/esbuild-wasm@0.14.2/esbuild.wasm"
 		});
 		service = true;
 	}
 	// bundle code
 	try {
 		const result = await esbuild.build({
-			entryPoints: [ "index.js" ],
+			entryPoints: ["index.js"],
 			bundle: true,
 			write: false,
-			plugins: [ unpkgPathPlugin(), fetchPlugin(rawCode) ],
-			define:
-				{
-					"process.env.NODE_ENV": '"production"',
-					global: "window"
-				},
+			plugins: [unpkgPathPlugin(), fetchPlugin(rawCode)],
+			define: {
+				"process.env.NODE_ENV": '"production"',
+				global: "window"
+			},
 			// configure esbuild to use _React for the show() function to prevent naming collision with "import React ..."
 			jsxFactory: "_React.createElement",
 			jsxFragment: "_React.Fragment"
