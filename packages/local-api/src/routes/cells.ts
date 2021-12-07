@@ -29,7 +29,7 @@ export const createCellsRouter = (filename: string, dir: string) => {
 				console.log("File does not exist. Creating new 'notebook.js' file...");
 				// Create file and add default cells
 				await fs.writeFile(fullPath, `${startingCells}`, "utf-8");
-				res.send([]);
+				res.send(startingCells);
 			} else {
 				throw err;
 			}
