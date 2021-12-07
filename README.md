@@ -11,4 +11,4 @@ This is an interactive coding environment. You can write Javascript, see it get 
 
 ---
 
-All of your changes get saved to the file you opened JBook with. So if you ran **_npx run jbook serve test.js_**, all the text and code you write will be saved to the **_test.js_** file
+All of your changes get saved to the file you opened JBook with. So if you ran **_npx jsnote-dan serve test.js_**, all the text and code you write will be saved to the **_test.js_** file

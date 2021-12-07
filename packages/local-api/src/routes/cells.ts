@@ -1,6 +1,7 @@
 import express from "express";
 import fs from "fs/promises";
 import path from "path";
+import startingCells from "./start";
 
 interface Cell {
 	id: string;
@@ -27,7 +28,7 @@ export const createCellsRouter = (filename: string, dir: string) => {
 			if (err instanceof Error && err.message.includes("ENOENT")) {
 				console.log("File does not exist. Creating new 'notebook.js' file...");
 				// Create file and add default cells
-				await fs.writeFile(fullPath, "[]", "utf-8");
+				await fs.writeFile(fullPath, `${startingCells}`, "utf-8");
 				res.send([]);
 			} else {
 				throw err;
